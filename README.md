@@ -83,11 +83,28 @@ source ~/catkin_ws/devel/setup.bash    # (optional)
 source Tools/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)
 export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
-roslaunch px4 posix_sitl.launch
+roslaunch px4 mavros_posix_sitl.launch
 ```
 
 # Mavros
 Download mavros from github into ```catkin_ws/src/``` and build workspace with ```catkin build```.
+
+launch mavros using ```roslaunch mavros px4.launch```.
+
+Check everything is ok by subscribing to a topic. Note not all topics are used, but either of the following should be active: ```/mavros/local_position/pose``` or ```/mavros/imu/data_raw```.
+
+# Take off, land, go places
+
+-- Add link to python scripts --
+
+ARM: ```rosservice call /mavros/cmd/arming "value: true" ```
+Publish target pose: ```python3 /home/seb/Documents/uav_workshop/dummy_pose_publisher.py```
+
+```rosservice call /mavros/set_mode "base_mode: 0
+custom_mode: 'OFFBOARD'" ```
+
+If you get an error message in the PX4 sim, that looks a bit like: try to set param COM_RCL_EXCEPT to 4 in QGroundControl.
+
 
 # Realsense
 
