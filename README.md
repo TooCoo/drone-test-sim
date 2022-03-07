@@ -95,7 +95,8 @@ Check everything is ok by subscribing to a topic. Note not all topics are used, 
 
 # Take off, land, go places
 
--- Add link to python scripts --
+In ```src``` folder there are python scripts for ```fake_mocap.py``` and to control pose.
+
 
 ARM: ```rosservice call /mavros/cmd/arming "value: true" ```
 Publish target pose: ```python3 /home/seb/Documents/uav_workshop/dummy_pose_publisher.py```
