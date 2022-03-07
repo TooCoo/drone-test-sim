@@ -137,6 +137,8 @@ Search for ```COM_RCL_EXCEPT``` and set value to ```4```.
 
 We are now ready to fly!
 
+![Drone on the ground](readme_images/drone_sitting_down.png)
+
 In ```src``` folder there are python scripts for ```fake_mocap.py``` and to control pose. This is needed to move to "OFFBOARD" mode. Python files are run by:
 
 ```bash
@@ -161,10 +163,11 @@ rosservice call /mavros/set_mode "base_mode: 0
 custom_mode: 'OFFBOARD'" 
 ```
 
-
 ```bash
 rosservice call /mavros/cmd/arming "value: true" 
 ```
+
+![Drone in the ground](readme_images/drone_standing_up.png)
 
 ## More advanced
 in ```src``` there is a script ```pose_demo.py``` this program will move the UAV in a square, as well as automatically arming and go offboard. Check out this file to consider more complicated control methods.
