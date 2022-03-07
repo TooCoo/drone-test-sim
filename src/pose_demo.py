@@ -17,7 +17,7 @@ from geometry_msgs.msg import PoseStamped, PoseWithCovarianceStamped
 
 class PosePublisher:
     def __init__(self):
-        rospy.init_node('vive_to_mavros', anonymous=True)
+        rospy.init_node('pose_demo_node', anonymous=True)
         self.rate = rospy.Rate(30)  # 10hz
         self.current_pose_name = '/mavros/local_position/pose'
         self.topic_name = '/mavros/setpoint_position/local'
@@ -43,7 +43,7 @@ class PosePublisher:
         self.set_takeoff_srv = rospy.ServiceProxy('/mavros/cmd/takeoff', CommandTOL)
         self.set_land_srv = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
 
-        self.state_sub = rospy.Subscriber('/mavros/state',State,self.state_cb)
+        self.state_sub = rospy.Subscriber('/mavros/state', State, self.state_cb)
 
         self.state = State()
         self.mode = ''
@@ -171,14 +171,19 @@ class PosePublisher:
         self.mode = data.mode
 
     def callback(self, msg):
-        distance_to_next_point = 0
-        current_position = msg.pose.position
-        target_position = self.waypoints[self.current_wp].pose.position
-        distance_vector = [target_position.x - current_position.x, target_position.y - current_position.y, target_position.z - current_position.z]
-        distance = np.linalg.norm(distance_vector)
+        if self.current_wp == len(self.waypoints):
+            pass
+        else:
+            distance_to_next_point = 0
+            current_position = msg.pose.position
+            target_position = self.waypoints[self.current_wp].pose.position
+            distance_vector = [target_position.x - current_position.x, target_position.y - current_position.y, target_position.z - current_position.z]
+            distance = np.linalg.norm(distance_vector)
 
-        if distance < self.arrive_tol:
-            self.current_wp += 1
+            if distance < self.arrive_tol:
+                # If we are at the last waypoing fine
+                if self.current_wp != len(self.waypoints):
+                    self.current_wp += 1
 
         #print(f"{msg.pose.position.x}, {msg.pose.position.y}, {msg.pose.position.z}")
 
@@ -197,6 +202,11 @@ class PosePublisher:
 
             if self.current_wp == len(self.waypoints):
                 print("This is the final waypoint.")
+                print("Sending land command")
+                land_response = self.set_land_srv(min_pitch=0, yaw=0, latitude=0, longitude=0, altitude=0)
+                if land_response:
+                    print("UAV landed, python is exiting.")
+                    exit()
             else:
                 msg = self.waypoints[self.current_wp]
                 msg.header.seq = count
