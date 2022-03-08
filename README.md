@@ -86,8 +86,7 @@ The first time you run mavros it will have an error about geographic libs not be
 
 Mavros should already be installed. You can check by finding its installation location with ```roscd mavros``` and you will find yourselves in the Mavros directory.
 
-
-Check everything is ok by subscribing to a topic. Note not all topics are used, but either of the following should be active: ```/mavros/local_position/pose``` or ```/mavros/imu/data_raw```.
+Check everything is ok by subscribing to a topic. Note not all topics are used, but either of the following should be active, check using ```rostopic echo``` followed by either ```/mavros/local_position/pose``` or ```/mavros/imu/data_raw```.
 
 # Take off, land, go places
 
@@ -174,6 +173,8 @@ rosservice call /mavros/cmd/arming "value: true"
 ## More advanced
 in ```src``` there is a script ```pose_demo.py``` this program will move the UAV in a square, as well as automatically arming and go offboard. Check out this file to consider more complicated control methods.
 
+# Additional Worlds
+In the folder ```worlds``` there is an alternate world ```mrac_world.world```. If you copy this to ```PX4-Autopilot/Tools/sitl_gazebo/worlds/```, you will need to update the world arg in the launch file, ```PX4-Autopilot/<somewhere here>```.
 
 # Realsense
 
