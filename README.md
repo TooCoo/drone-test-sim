@@ -82,6 +82,8 @@ roslaunch px4 mavros_posix_sitl.launch
 If everything went well we should see Gazebo opening with a UAV on the ground.
 
 ## Mavros
+The first time you run mavros it will have an error about geographic libs not being setup. There is a script to install these stored in ```/opt/ros/noetic/lib/mavros``` called ```install_geographiclib_datasets.sh```. Run this script ```sudo ./install_geographiclib_datasets.sh``` and the geographic lib data will be installed.
+
 Mavros should already be installed. You can check by finding its installation location with ```roscd mavros``` and you will find yourselves in the Mavros directory.
 
 
