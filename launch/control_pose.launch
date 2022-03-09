@@ -1,0 +1,49 @@
+<launch>
+ 
+<!--arg name="fcu_url" default="serial:///dev/ttyUSB0:921600" -->
+<arg name="fcu_url" default="/dev/ttyACM0:57600"/>
+<!--arg name="gcs_url" default="udp://:14556@192.168.150.2:14550" /-->
+<arg name="tgt_system" default="1" />
+<arg name="tgt_component" default="1" />
+ 
+ 
+<node name="mavros" pkg="mavros" type="mavros_node" output="screen">
+    <param name="fcu_url" value="$(arg fcu_url)" />
+    <!--param name="gcs_url" value="$(arg gcs_url)" /-->
+    <param name="target_system_id" value="$(arg tgt_system)" />
+    <param name="target_component_id" value="$(arg tgt_component)" />
+ 
+    <!--rosparam command="load" file="$(find mavros)/launch/px4_blacklist.yaml"-->
+ 
+    <!-- enable heartbeat send and reduce timeout -->
+    <param name="conn_heartbeat" value="5.0" />
+    <param name="conn_timeout" value="5.0" />
+
+    <!-- automatically start mavlink on USB -->
+    <param name="startup_px4_usb_quirk" value="true" />
+
+    <!-- MOCAP-->
+    <param name="mocap/use_tf" value="true"/>
+    <param name="mocap/use_pose" value="false"/>
+
+    <!-- set local position frame -->
+    <param name="local_position/frame_id" value="map"/>
+
+    <!-- Vision parameters (mocap frames)-->
+    <param name="vision_pose/tf/listen" value="true"/>
+    <param name="vision_pose/tf/frame_id" value="map"/>
+    <param name="vision_pose/tf/child_frame_id" value="base_link"/>
+
+    <!-- LHR_6C62CAC0-->
+
+
+    
+</node>
+ 
+<node pkg="tf" type="static_transform_publisher" name="map_to_odom_broadcaster" args="0 0 0 0 0 0 1 map odom 100" />
+
+<!-- the -0.06m is an offset between vive tracker and px4-->
+<node pkg="tf" type="static_transform_publisher" name="odom_to_base_broadcaster" args="0 0 -0.06 3.14 0 0 LHR_6C62CAC0 base_link 100" />
+
+ 
+</launch>
