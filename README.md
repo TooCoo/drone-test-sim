@@ -1,3 +1,16 @@
+# Preflight Checklist
+1. Make sure tracking is working
+2. Drone can Arm (Use RC)
+3. Battery is ok
+    - Drone's Lipo (use mavros)
+    - Laptop
+    - RC
+4. Check Tracking again (UAV's local pose should be over the vive's TF)
+5. Arm drone (Use RC)
+6. Send setpoint poses
+7. Go offboard
+
+
 # setup instructions
 
 ## Install ROS
@@ -174,7 +187,11 @@ rosservice call /mavros/cmd/arming "value: true"
 in ```src``` there is a script ```pose_demo.py``` this program will move the UAV in a square, as well as automatically arming and go offboard. Check out this file to consider more complicated control methods.
 
 # Additional Worlds
-In the folder ```worlds``` there is an alternate world ```mrac_world.world```. If you copy this to ```PX4-Autopilot/Tools/sitl_gazebo/worlds/```, you will need to update the world arg in the launch file, ```PX4-Autopilot/<somewhere here>```.
+In the folder ```worlds``` there is an alternate world ```mrac_world.world```. If you copy this to ```PX4-Autopilot/Tools/sitl_gazebo/worlds```, you will need to update the world arg in the launch file, ```PX4-Autopilot/launch```.
+
+```
+<arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/mrac_world.world"/>
+```
 
 # Realsense
 
